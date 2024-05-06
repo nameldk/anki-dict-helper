@@ -40,6 +40,9 @@ class Client {
     }
 
     onKeyDown(e) {
+        if (e.repeat) {
+            return
+        }
         if (this.enabled && this.lastMousePos !== null && (e.keyCode === this.activateKey || e.charCode === this.activateKey)) {
             this.searchAt(this.lastMousePos);
         }
