@@ -48,6 +48,7 @@ class Yomichan {
         this.setState('disabled');
         this.ankiConnectVer = 5;
         this.tabStateMap = {};
+        this.audio = new Audio(); // for play text
 
         chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
@@ -380,7 +381,22 @@ class Yomichan {
     api_renderText({template, data, callback}) {
         callback(Handlebars.templates[template](data));
     }
-    
+
+    api_playAudio({text, callback}) {
+        if (!text) {
+            callback("empty_text")
+            return;
+        }
+        try {
+            let url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}`;
+            this.audio.currentTime = 0;
+            this.audio.src = url;
+            this.audio.play()
+            callback('ok')
+        } catch (e) {
+            callback(e)
+        }
+    }
 }
 
 window.yomichan = new Yomichan();

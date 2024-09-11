@@ -20,7 +20,6 @@
 class Client {
     constructor() {
         this.popup = new Popup();
-        this.audio = {};
         this.lastMousePos = null;
         this.lastTextSource = null;
         this.activateKey = 16;
@@ -185,18 +184,11 @@ class Client {
 
     api_playAudio(index) {
         const definition = this.definitions[index];
-
-        let url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(definition.expression)}`;
-
-        for (let key in this.audio) {
-            this.audio[key].pause();
-        }
-
-        const audio = this.audio[url] || new Audio(url);
-        audio.currentTime = 0;
-        audio.play();
-
-        this.audio[url] = audio;
+        bgPlayAudio(definition.expression, function (res) {
+            if (res !== 'ok') {
+                console.error('play_audio_err', definition.expression, res)
+            }
+        })
     }
 
     api_displayKanji(kanji) {

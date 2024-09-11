@@ -40,3 +40,7 @@ function bgCanAddDefinitions(definitions, modes, callback) {
 function bgAddDefinition(definition, g_index, mode, callback) {
     bgSendMessage('addDefinition', {definition, g_index, mode}, callback);
 }
+
+function bgPlayAudio(text, callback) {
+    bgSendMessage('playAudio', {text}, callback);
+}
